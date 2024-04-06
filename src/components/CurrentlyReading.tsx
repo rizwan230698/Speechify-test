@@ -16,9 +16,35 @@ export const CurrentlyReading = ({
   currentSentenceIdx: number;
   sentences: string[];
 }) => {
+  const updateCurrentWord = (sentence: string) => {
+    if (!sentence) return "";
+
+    const tempSentence = sentence;
+    const [charIndex, charLength] = currentWordRange;
+
+    const startIdx = charIndex;
+    const endIdx = charIndex + charLength;
+
+    const updatedSentence =
+      tempSentence.slice(0, startIdx) +
+      `<span class="currentword">${tempSentence.slice(
+        startIdx,
+        endIdx
+      )}</span>` +
+      tempSentence.slice(endIdx);
+
+    return updatedSentence;
+  };
+
   return (
-    <div data-testid="currently-reading">
-      <p data-testid="current-sentence">{sentences[currentSentenceIdx]}</p>
+    <div className="currently-reading" data-testid="currently-reading">
+      <p
+        dangerouslySetInnerHTML={{
+          __html: updateCurrentWord(sentences[currentSentenceIdx]),
+        }}
+        className="currently-reading-text"
+        data-testid="current-sentence"
+      ></p>
       <div>{sentences.map((sentence) => sentence)}</div>
     </div>
   );

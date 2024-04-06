@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { PlayingState, createSpeechEngine } from "./speech";
+import { PlayingState, SpeechEngine, createSpeechEngine } from "./speech";
 
 /*
   @description
@@ -15,26 +15,54 @@ const useSpeech = (sentences: Array<string>) => {
   const [currentWordRange, setCurrentWordRange] = useState<[number, number]>([
     0, 0,
   ]);
-
   const [playbackState, setPlaybackState] = useState<PlayingState>("paused");
 
-  const speechEngine = createSpeechEngine({
-    onEnd: () => handleEnd,
-    onBoundary: () => {},
-    onStateUpdate: (state) => setPlaybackState(state),
-  });
-
-  const handleEnd = () => {
-    if (currentSentenceIdx === sentences.length - 1) {
-      setCurrentSentenceIdx(0);
-    } else {
-      setCurrentSentenceIdx((prev) => prev + 1);
-    }
-  };
+  const speechEngineRef = useRef<SpeechEngine | null>(null);
 
   useEffect(() => {
-    speechEngine.load(sentences[currentSentenceIdx]);
-  }, [currentSentenceIdx]);
+    if (sentences.length) {
+      const engine = createSpeechEngine({
+        onEnd: handleEnd,
+        onBoundary: (e) => {
+          setCurrentWordRange([e.charIndex, e.charLength]);
+        },
+        onStateUpdate: handleOnStateUpdate,
+      });
+      speechEngineRef.current = engine;
+    }
+  }, [sentences]);
+
+  function handleEnd(e: any) {
+    setCurrentSentenceIdx((prev) => {
+      if (prev + 1 <= sentences.length - 1) return prev + 1;
+      return 0;
+    });
+    setCurrentWordRange([0, 0]);
+  }
+
+  function handleOnStateUpdate(state: PlayingState) {
+    setPlaybackState(state);
+  }
+
+  useEffect(() => {
+    if (!sentences.length) return;
+    setCurrentWordRange([0, 0]);
+    setCurrentSentenceIdx(0);
+  }, [sentences]);
+
+  useEffect(() => {
+    if (!sentences.length) return;
+    speechEngineRef.current?.load(sentences[currentSentenceIdx]);
+  }, [sentences, currentSentenceIdx]);
+
+  useEffect(() => {
+    if (playbackState === "paused") {
+      speechEngineRef.current?.pause();
+    }
+    if (playbackState === "playing") {
+      speechEngineRef.current?.play();
+    }
+  }, [playbackState]);
 
   const play = () => setPlaybackState("playing");
   const pause = () => setPlaybackState("paused");
