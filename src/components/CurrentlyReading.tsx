@@ -18,8 +18,8 @@ export const CurrentlyReading = ({
 }) => {
   return (
     <div data-testid="currently-reading">
-      <div>{sentences.map((sentence) => sentence)}</div>
       <p data-testid="current-sentence">{sentences[currentSentenceIdx]}</p>
+      <div>{sentences.map((sentence) => sentence)}</div>
     </div>
   );
 };
