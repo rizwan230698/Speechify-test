@@ -10,7 +10,7 @@ const fetchContent = async (url = API_URL): Promise<string> => {
     const data = await response.json();
     return Promise.resolve(data.content);
   } catch (error) {
-    return Promise.reject("<speak><s>There was an error</s></speak>");
+    return Promise.resolve("<speak><s>There was an error</s></speak>");
   }
 };
 
