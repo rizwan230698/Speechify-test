@@ -88,7 +88,7 @@ describe("Currently Reading Component", () => {
 
     rerender(
       <CurrentlyReading
-        currentWordRange={[5, 7]}
+        currentWordRange={[5, 2]}
         currentSentenceIdx={1}
         sentences={sentences}
       />

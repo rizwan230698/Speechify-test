@@ -70,6 +70,7 @@ const useSpeech = (sentences: Array<string>) => {
   return {
     currentSentenceIdx,
     currentWordRange,
+    playbackState,
     controls: {
       play,
       pause,

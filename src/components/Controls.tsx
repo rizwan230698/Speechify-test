@@ -25,7 +25,7 @@ export const Controls = ({
       ) : (
         <button onClick={play}>Play</button>
       )}
-      <button onClick={loadNewContent}>Load</button>
+      <button onClick={loadNewContent}>Load new content</button>
     </div>
   );
 };

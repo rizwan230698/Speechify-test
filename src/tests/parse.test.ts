@@ -1,11 +1,6 @@
-import {
-  describe,
-  expect,
-  expectTypeOf,
-  it,
-} from 'vitest';
+import { describe, expect, expectTypeOf, it } from "vitest";
 
-import { parseContentIntoSentences } from '../lib/content';
+import { parseContentIntoSentences } from "../lib/content";
 
 const testCases = [
   {

@@ -27,7 +27,7 @@ export const CurrentlyReading = ({
 
     const updatedSentence =
       tempSentence.slice(0, startIdx) +
-      `<span class="currentword">${tempSentence.slice(
+      `<span class="currentword" data-testid="current-word">${tempSentence.slice(
         startIdx,
         endIdx
       )}</span>` +

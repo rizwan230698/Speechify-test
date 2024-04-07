@@ -20,10 +20,14 @@ const fetchContent = async (url = API_URL): Promise<string> => {
  */
 const parseContentIntoSentences = (content: string) => {
   //Note:- We can surely improve this function. But for now this is first thing that came in my mind.
+  const isSSMLInvalid = !content.startsWith("<speak>");
+
+  if (isSSMLInvalid) throw new Error("This is not valid ssml");
+
   const sentences: string[] = [];
   content.split("</s>").forEach((item) => {
     if (item.includes("<s>")) {
-      sentences.push(item.slice(item.indexOf("<s>") + 3, item.length - 1));
+      sentences.push(item.slice(item.indexOf("<s>") + 3, item.length));
     }
   });
 

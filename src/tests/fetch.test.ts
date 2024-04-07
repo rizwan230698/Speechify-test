@@ -1,13 +1,8 @@
-import { setupWorker } from 'msw/browser';
-import {
-  beforeAll,
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { setupWorker } from "msw/browser";
+import { beforeAll, describe, expect, it } from "vitest";
 
-import { fetchContent } from '../lib/content';
-import { handlers } from './mocks/handlers';
+import { fetchContent } from "../lib/content";
+import { handlers } from "./mocks/handlers";
 
 const server = setupWorker();
 
